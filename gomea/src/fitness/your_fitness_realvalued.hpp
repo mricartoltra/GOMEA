@@ -12,8 +12,8 @@ class yourFitnessFunctionRealValued : public GBOFitnessFunction_t<double>
 		
 		int getNumberOfSubfunctions();
 		vec_t<int> inputsToSubfunction( int subfunction_index );
-		double getLowerRangeBound( int dimension );
-		double getUpperRangeBound( int dimension );
+		double getLowerRangeBound( int dimension, vec_t<double> &variables );
+		double getUpperRangeBound( int dimension, vec_t<double> &variables );
 
 	private:
 		double subfunction( int subfunction_index, vec_t<double> &variables );

@@ -67,12 +67,12 @@ double circlesInASquareBBO_t::objectiveFunction( int objective_index, vec_t<doub
 	return -min_dist;
 }
 		
-double circlesInASquareBBO_t::getLowerRangeBound( int dimension )
+double circlesInASquareBBO_t::getLowerRangeBound( int dimension, vec_t<double> &variables )
 {
 	return 0.0;
 }
 
-double circlesInASquareBBO_t::getUpperRangeBound( int dimension )
+double circlesInASquareBBO_t::getUpperRangeBound( int dimension, vec_t<double> &variables )
 {
 	return 1.0;
 }

@@ -11,10 +11,10 @@ class CustomRosenbrockFunction(gomea.fitness.BBOFitnessFunctionRealValued):
             f += 100*(y-x*x)*(y-x*x) + (1.0-x)*(1.0-x)
         return f
     
-    def lower_range_bound(self, variable_index):
+    def lower_range_bound(self, variable_index, variables):
         return -10
     
-    def upper_range_bound(self, variable_index):
+    def upper_range_bound(self, variable_index, variables):
         return 10
 
 dim = 10

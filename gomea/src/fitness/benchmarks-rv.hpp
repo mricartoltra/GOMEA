@@ -73,8 +73,8 @@ class circlesInASquareBBO_t : public BBOFitnessFunction_t<double>
 		circlesInASquareBBO_t( int number_of_variables, double vtr );
 		double objectiveFunction( int objective_index, vec_t<double> &variables );
 
-		double getLowerRangeBound(int dimension);
-		double getUpperRangeBound(int dimension);
+		double getLowerRangeBound(int dimension, vec_t<double> &variables);
+		double getUpperRangeBound(int dimension, vec_t<double> &variables);
 
 	private:
 		vec_t<double> optima;

@@ -118,21 +118,21 @@ double pyGBOFitnessFunction_t<T>::getSimilarityMeasure( size_t var_a, size_t var
 }
 
 template<class T>
-double pyGBOFitnessFunction_t<T>::getLowerRangeBound( int variable_index )
+double pyGBOFitnessFunction_t<T>::getLowerRangeBound( int variable_index, vec_t<double> &variables )
 {
-	return gomea_pyfitness_lower_range_bound(py_class,variable_index);
+	return gomea_pyfitness_lower_range_bound(py_class,variable_index,variables);
 }
 
 template<class T>	
-double pyGBOFitnessFunction_t<T>::getUpperRangeBound( int variable_index )
+double pyGBOFitnessFunction_t<T>::getUpperRangeBound( int variable_index, vec_t<double> &variables )
 {
-	return gomea_pyfitness_upper_range_bound(py_class,variable_index);
+	return gomea_pyfitness_upper_range_bound(py_class,variable_index,variables);
 }
 
 template<>
-double pyGBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index )
+double pyGBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index, vec_t<double> &variables )
 {
-	double result = gomea_pyfitness_lower_range_bound(py_class,variable_index);
+	double result = gomea_pyfitness_lower_range_bound(py_class,variable_index,variables);
 	if( result == -INFINITY ){
 		return 0;
 	}
@@ -140,9 +140,9 @@ double pyGBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index )
 }
 
 template<>	
-double pyGBOFitnessFunction_t<char>::getUpperRangeBound( int variable_index )
+double pyGBOFitnessFunction_t<char>::getUpperRangeBound( int variable_index, vec_t<double> &variables )
 {
-	double result = gomea_pyfitness_upper_range_bound(py_class,variable_index);
+	double result = gomea_pyfitness_upper_range_bound(py_class,variable_index,variables);
 	if( result == INFINITY ){
 		return alphabet_size-1;
 	}

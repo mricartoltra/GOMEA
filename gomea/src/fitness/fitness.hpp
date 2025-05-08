@@ -21,8 +21,8 @@ typedef enum{
 class fitness_generic_t{
 	public:
 		bool isParameterInRangeBounds( double parameter, int dimension );
-		virtual double getLowerRangeBound( int dimension );
-		virtual double getUpperRangeBound( int dimension );
+		virtual double getLowerRangeBound( int dimension, vec_t<double> &variables );
+		virtual double getUpperRangeBound( int dimension, vec_t<double> &variables );
 };
 
 template<class T>

@@ -29,12 +29,12 @@ double yourFitnessFunctionRealValued::subfunction( int subfunction_index, vec_t<
 	return( 100*(y-x*x)*(y-x*x) + (1.0-x)*(1.0-x) );
 }
 
-double yourFitnessFunctionRealValued::getLowerRangeBound( int dimension )
+double yourFitnessFunctionRealValued::getLowerRangeBound( int dimension, vec_t<double> &variables )
 {
 	return( -1000 );
 }
 		
-double yourFitnessFunctionRealValued::getUpperRangeBound( int dimension )
+double yourFitnessFunctionRealValued::getUpperRangeBound( int dimension, vec_t<double> &variables )
 {
 	return( 1000 );
 }
