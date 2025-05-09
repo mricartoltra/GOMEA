@@ -443,10 +443,7 @@ void population_t::applyPartialAMS( partial_solution_t<double> *solution, double
 	double shrink_factor = 2;
 	double *result = (double*) Malloc( solution->getNumberOfTouchedVariables() * sizeof(double) );
 
-	vec_t<double> dummy_full_vars_for_check;
-    if (this->fitness && this->fitness->number_of_variables > 0) {
-        dummy_full_vars_for_check.resize(this->fitness->number_of_variables);
-    }
+	solution_t<double> *dummy_full_vars_for_check = new solution_t<double>(fitness->number_of_variables);
 
 	while( (out_of_range == true) && (shrink_factor > 1e-10) )
 	{
@@ -456,7 +453,7 @@ void population_t::applyPartialAMS( partial_solution_t<double> *solution, double
 		{
 			int im = solution->touched_indices[m];
 			result[m] = solution->touched_variables[m] + shrink_factor * delta_AMS * cmul * (mean_shift_vector[im]);
-			if( !fitness->isParameterInRangeBounds( result[m], im, dummy_full_vars_for_check ) )
+			if( !fitness->isParameterInRangeBounds( result[m], im, dummy_full_vars_for_check->variables ) )
 			{
 				out_of_range = true;
 				break;
@@ -470,6 +467,7 @@ void population_t::applyPartialAMS( partial_solution_t<double> *solution, double
 			solution->touched_variables[m] = result[m];
 		}
 	}
+	delete (dummy_full_vars_for_check);
 	free( result );
 }
 		
@@ -763,16 +761,13 @@ void population_t::initializeParameterRangeBounds( double lower_user_range, doub
 	lower_init_ranges  = (double *) Malloc( fitness->number_of_variables*sizeof( double ) );
 	upper_init_ranges  = (double *) Malloc( fitness->number_of_variables*sizeof( double ) );
 
-	vec_t<double> dummy_vars_for_bounds;
-    if (fitness->number_of_variables > 0) {
-        dummy_vars_for_bounds.resize(fitness->number_of_variables);
-    }
+	solution_t<double> *dummy_vars_for_bounds = new solution_t<double>(fitness->number_of_variables);
 
 	for(int i = 0; i < fitness->number_of_variables; i++ )
 	{
 		lower_init_ranges[i] = lower_user_range;
-		double problem_lower_bound = fitness->getLowerRangeBound(i, dummy_vars_for_bounds);
-        double problem_upper_bound = fitness->getUpperRangeBound(i, dummy_vars_for_bounds);
+		double problem_lower_bound = fitness->getLowerRangeBound(i, dummy_vars_for_bounds->variables);
+        double problem_upper_bound = fitness->getUpperRangeBound(i, dummy_vars_for_bounds->variables);
 
 		if( lower_user_range < problem_lower_bound )
 			lower_init_ranges[i] = problem_lower_bound;
@@ -785,6 +780,8 @@ void population_t::initializeParameterRangeBounds( double lower_user_range, doub
 		if( upper_user_range < problem_lower_bound )
 			upper_init_ranges[i] = problem_lower_bound;
 	}
+
+	delete (dummy_vars_for_bounds);
 }
 
 

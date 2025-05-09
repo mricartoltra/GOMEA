@@ -323,13 +323,13 @@ double fitness_t<T>::getSimilarityMeasure( size_t var_a, size_t var_b )
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-= Section Problems -=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-double fitness_generic_t::getLowerRangeBound( int dimension, vec_t<T> &variables )
+double fitness_generic_t::getLowerRangeBound( int dimension, std::vector<double> &variables )
 {
 	(void)variables;
 	return( -INFINITY );
 }
 		
-double fitness_generic_t::getUpperRangeBound( int dimension, vec_t<T> &variables )
+double fitness_generic_t::getUpperRangeBound( int dimension, std::vector<double> &variables )
 {
 	(void)variables;
 	return( INFINITY );
@@ -339,7 +339,7 @@ double fitness_generic_t::getUpperRangeBound( int dimension, vec_t<T> &variables
  * Returns whether a parameter is inside the range bound of
  * every problem.
  */
-bool fitness_generic_t::isParameterInRangeBounds( double parameter, int dimension, vec_t<T> &variables )
+bool fitness_generic_t::isParameterInRangeBounds( double parameter, int dimension, std::vector<double> &variables )
 {
     if( parameter < getLowerRangeBound( dimension, variables ) ||
 		parameter > getUpperRangeBound( dimension, variables ) ||

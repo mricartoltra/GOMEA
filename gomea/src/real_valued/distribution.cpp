@@ -641,7 +641,7 @@ partial_solution_t<double> *normal_distribution_t::generatePartialSolution( solu
 		{
 			for (size_t i = 0; i < result.size(); i++)
 			{
-				if (!fitness_function->isParameterInRangeBounds(result[i], indices[i]))
+				if (!fitness_function->isParameterInRangeBounds(result[i], indices[i], parent->variables))
 				{
 					ready = false;
 					break;
@@ -943,7 +943,7 @@ partial_solution_t<double> *conditional_distribution_t::generatePartialSolution(
 			{
 				for (size_t i = 0; i < result.size(); i++)
 				{
-					if (!fitness_function->isParameterInRangeBounds(result[i], indices[i]))
+					if (!fitness_function->isParameterInRangeBounds(result[i], indices[i], solution_conditioned_on->variables))
 					{
 						ready = false;
 						break;

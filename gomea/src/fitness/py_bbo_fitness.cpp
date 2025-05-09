@@ -76,55 +76,26 @@ double pyBBOFitnessFunction_t<double>::constraintFunction( vec_t<double> &variab
 }
 
 template<class T>
-double pyBBOFitnessFunction_t<T>::getLowerRangeBound( int variable_index, vec_t<T> &variables )
+double pyBBOFitnessFunction_t<T>::getLowerRangeBound( int variable_index, std::vector<T> &variables )
 {
-	int numpy_type_id;
-    if (std::is_same<T, double>::value) {
-        numpy_type_id = NPY_FLOAT64;
-    } else if (std::is_same<T, char>::value) {
-        numpy_type_id = NPY_BYTE;
-    }
+	double result = gomea_pyfitness_lower_range_bound_double(this->py_class, variable_index, variables);
 
-	npy_intp dims[1] = { static_cast<npy_intp>(variables.size()) };
-    PyObject *np_array_obj = PyArray_SimpleNewFromData(1, dims, numpy_type_id, variables.data());
-
-	double result = gomea_pyfitness_lower_range_bound(this->py_class, variable_index, np_array_obj);
-    
-    Py_DECREF(np_array_obj);
-    
     return result;
 }
 
 template<class T>	
-double pyBBOFitnessFunction_t<T>::getUpperRangeBound( int variable_index, vec_t<T> &variables )
+double pyBBOFitnessFunction_t<T>::getUpperRangeBound( int variable_index, std::vector<T> &variables )
 {
-	int numpy_type_id;
-    if (std::is_same<T, double>::value) {
-        numpy_type_id = NPY_FLOAT64;
-    } else if (std::is_same<T, char>::value) {
-        numpy_type_id = NPY_BYTE;
-    }
-
-	npy_intp dims[1] = { static_cast<npy_intp>(variables.size()) };
-    PyObject *np_array_obj = PyArray_SimpleNewFromData(1, dims, numpy_type_id, variables.data());
-
-	double result = gomea_pyfitness_upper_range_bound(this->py_class, variable_index, np_array_obj);
-    
-    Py_DECREF(np_array_obj);
-    
+	double result = gomea_pyfitness_upper_range_bound_double(this->py_class, variable_index, variables);
+ 
     return result;
 }
 
 template<>
-double pyBBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index, vec_t<char> &variables )
+double pyBBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index, std::vector<char> &variables )
 {
-	npy_intp dims[1] = { static_cast<npy_intp>(variables.size()) };
-    PyObject *np_array_obj = PyArray_SimpleNewFromData(1, dims, NPY_BYTE, variables.data());
+	double result = gomea_pyfitness_lower_range_bound_char(this->py_class, variable_index, variables);
 
-	double result = gomea_pyfitness_lower_range_bound(this->py_class, variable_index, np_array_obj);
-    
-    Py_DECREF(np_array_obj);
-    
     if( result == -INFINITY ){
         return 0;
     }
@@ -132,14 +103,9 @@ double pyBBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index, vec
 }
 
 template<>	
-double pyBBOFitnessFunction_t<char>::getUpperRangeBound( int variable_index, vec_t<char> &variables )
+double pyBBOFitnessFunction_t<char>::getUpperRangeBound( int variable_index, std::vector<char> &variables )
 {
-	npy_intp dims[1] = { static_cast<npy_intp>(variables.size()) };
-    PyObject *np_array_obj = PyArray_SimpleNewFromData(1, dims, NPY_BYTE, variables.data());
-
-	double result = gomea_pyfitness_upper_range_bound(this->py_class, variable_index, np_array_obj);
-    
-    Py_DECREF(np_array_obj);
+	double result = gomea_pyfitness_upper_range_bound_char(this->py_class, variable_index, variables);
     
     if( result == INFINITY ){
         return this->alphabet_size-1;

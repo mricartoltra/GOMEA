@@ -292,17 +292,17 @@ void Config::printVerboseOverview( void )
     printf("# Initialization ranges   = [%e;%e]\n", lower_user_range, upper_user_range );
     printf("# Boundary ranges         = ");
 
-    gomea::fitness::vec_t<double> dummy_variables_for_bounds;
-    if (fitness->number_of_variables > 0) {
-         dummy_variables_for_bounds.resize(fitness->number_of_variables);
-    }
+    solution_t<double> *dummy_variables_for_bounds = new solution_t<double>(fitness->number_of_variables);
 
     for( i = 0; i < fitness->number_of_variables; i++ )
     {
-        printf("x_%d: [%e;%e]", i, fitness->getLowerRangeBound(i, dummy_variables_for_bounds), fitness->getUpperRangeBound(i, dummy_variables_for_bounds) );
+        printf("x_%d: [%e;%e]", i, fitness->getLowerRangeBound(i, dummy_variables_for_bounds->variables), fitness->getUpperRangeBound(i, dummy_variables_for_bounds->variables) );
         if( i < fitness->number_of_variables-1 )
             printf("\n#                           ");
     }
+
+    delete (dummy_variables_for_bounds);
+
     printf("\n");
     printf("# Tau                     = %e\n", tau);
     printf("# Population size/normal  = %d\n", base_population_size);
