@@ -21,8 +21,8 @@ typedef enum{
 class fitness_generic_t{
 	public:
 		bool isParameterInRangeBounds( double parameter, int dimension );
-		virtual double getLowerRangeBound( int dimension, vec_t<double> &variables );
-		virtual double getUpperRangeBound( int dimension, vec_t<double> &variables );
+		virtual double getLowerRangeBound( int dimension );
+		virtual double getUpperRangeBound( int dimension );
 };
 
 template<class T>
@@ -88,6 +88,11 @@ class fitness_t : public fitness_generic_t
 		vec_t<vec_t<double>> getSimilarityMatrix( int similarity_measure_index );
 		virtual double getSimilarityMeasure( size_t var_a, size_t var_b );
 		
+		// New declarations for bounds methods with two parameters
+        virtual double getLowerRangeBound(int dimension, vec_t<T> &variables);
+        virtual double getUpperRangeBound(int dimension, vec_t<T> &variables);
+        bool isParameterInRangeBounds(double parameter, int dimension, vec_t<T> &variables);
+        
 		
 		double **initializeObjectiveRotationMatrix( double rotation_angle, int rotation_block_size );
 		double *rotateVariables( double *variables, int num_variables, double **rotation_matrix );

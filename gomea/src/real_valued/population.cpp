@@ -442,7 +442,13 @@ void population_t::applyPartialAMS( partial_solution_t<double> *solution, double
 	bool out_of_range = true;
 	double shrink_factor = 2;
 	double *result = (double*) Malloc( solution->getNumberOfTouchedVariables() * sizeof(double) );
-	while( (out_of_range == 1) && (shrink_factor > 1e-10) )
+
+	vec_t<double> dummy_full_vars_for_check;
+    if (this->fitness && this->fitness->number_of_variables > 0) {
+        dummy_full_vars_for_check.resize(this->fitness->number_of_variables);
+    }
+
+	while( (out_of_range == true) && (shrink_factor > 1e-10) )
 	{
 		shrink_factor *= 0.5;
 		out_of_range   = 0;
@@ -450,9 +456,9 @@ void population_t::applyPartialAMS( partial_solution_t<double> *solution, double
 		{
 			int im = solution->touched_indices[m];
 			result[m] = solution->touched_variables[m] + shrink_factor * delta_AMS * cmul * (mean_shift_vector[im]);
-			if( !fitness->isParameterInRangeBounds( result[m], im ) )
+			if( !fitness->isParameterInRangeBounds( result[m], im, dummy_full_vars_for_check ) )
 			{
-				out_of_range = 1;
+				out_of_range = true;
 				break;
 			}
 		}
@@ -486,7 +492,7 @@ bool population_t::applyAMS( int individual_index )
 		for(int m = 0; m < fitness->number_of_variables; m++ )
 		{
 			solution_AMS->variables[m] = individuals[individual_index]->variables[m] + shrink_factor*delta_AMS*(mean_shift_vector[m]);
-			if( !fitness->isParameterInRangeBounds( solution_AMS->variables[m], m ) )
+			if( !fitness->isParameterInRangeBounds( solution_AMS->variables[m], m, solution_AMS->variables ) )
 			{
 				out_of_range = true;
 				break;
@@ -757,19 +763,27 @@ void population_t::initializeParameterRangeBounds( double lower_user_range, doub
 	lower_init_ranges  = (double *) Malloc( fitness->number_of_variables*sizeof( double ) );
 	upper_init_ranges  = (double *) Malloc( fitness->number_of_variables*sizeof( double ) );
 
+	vec_t<double> dummy_vars_for_bounds;
+    if (fitness->number_of_variables > 0) {
+        dummy_vars_for_bounds.resize(fitness->number_of_variables);
+    }
+
 	for(int i = 0; i < fitness->number_of_variables; i++ )
 	{
 		lower_init_ranges[i] = lower_user_range;
-		if( lower_user_range < fitness->getLowerRangeBound(i) )
-			lower_init_ranges[i] = fitness->getLowerRangeBound(i);
-		if( lower_user_range > fitness->getUpperRangeBound(i) )
-			lower_init_ranges[i] = fitness->getLowerRangeBound(i);
+		double problem_lower_bound = fitness->getLowerRangeBound(i, dummy_vars_for_bounds);
+        double problem_upper_bound = fitness->getUpperRangeBound(i, dummy_vars_for_bounds);
+
+		if( lower_user_range < problem_lower_bound )
+			lower_init_ranges[i] = problem_lower_bound;
+		if( lower_user_range > problem_upper_bound )
+			lower_init_ranges[i] = problem_upper_bound;
 
 		upper_init_ranges[i] = upper_user_range;
-		if( upper_user_range > fitness->getUpperRangeBound(i) )
-			upper_init_ranges[i] = fitness->getUpperRangeBound(i);
-		if( upper_user_range < fitness->getLowerRangeBound(i) )
-			upper_init_ranges[i] = fitness->getUpperRangeBound(i);
+		if( upper_user_range > problem_upper_bound)
+			upper_init_ranges[i] = problem_upper_bound;
+		if( upper_user_range < problem_lower_bound )
+			upper_init_ranges[i] = problem_lower_bound;
 	}
 }
 
