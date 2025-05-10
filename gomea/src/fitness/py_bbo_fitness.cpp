@@ -75,16 +75,16 @@ double pyBBOFitnessFunction_t<double>::constraintFunction( vec_t<double> &variab
 	return result;
 }
 
-template<class T>
-double pyBBOFitnessFunction_t<T>::getLowerRangeBound( int variable_index, std::vector<T> &variables )
+template<>
+double pyBBOFitnessFunction_t<double>::getLowerRangeBound( int variable_index, vec_t<double> &variables )
 {
 	double result = gomea_pyfitness_lower_range_bound_double(this->py_class, variable_index, variables);
 
     return result;
 }
 
-template<class T>	
-double pyBBOFitnessFunction_t<T>::getUpperRangeBound( int variable_index, std::vector<T> &variables )
+template<>	
+double pyBBOFitnessFunction_t<double>::getUpperRangeBound( int variable_index, vec_t<double> &variables )
 {
 	double result = gomea_pyfitness_upper_range_bound_double(this->py_class, variable_index, variables);
  
@@ -92,7 +92,7 @@ double pyBBOFitnessFunction_t<T>::getUpperRangeBound( int variable_index, std::v
 }
 
 template<>
-double pyBBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index, std::vector<char> &variables )
+double pyBBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index, vec_t<char> &variables )
 {
 	double result = gomea_pyfitness_lower_range_bound_char(this->py_class, variable_index, variables);
 
@@ -103,7 +103,7 @@ double pyBBOFitnessFunction_t<char>::getLowerRangeBound( int variable_index, std
 }
 
 template<>	
-double pyBBOFitnessFunction_t<char>::getUpperRangeBound( int variable_index, std::vector<char> &variables )
+double pyBBOFitnessFunction_t<char>::getUpperRangeBound( int variable_index, vec_t<char> &variables )
 {
 	double result = gomea_pyfitness_upper_range_bound_char(this->py_class, variable_index, variables);
     

@@ -21,8 +21,8 @@ class pyBBOFitnessFunction_t : public BBOFitnessFunction_t<T>
 		double objectiveFunction( int objective_index, vec_t<T> &variables );
 		double constraintFunction( vec_t<T> &variables );
 		
-		double getLowerRangeBound( int dimension, std::vector<T> &variables );
-		double getUpperRangeBound( int dimension, std::vector<T> &variables );
+		double getLowerRangeBound( int dimension, vec_t<T> &variables );
+		double getUpperRangeBound( int dimension, vec_t<T> &variables );
 	
 	protected:
 		PyObject *py_class;

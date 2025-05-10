@@ -27,8 +27,8 @@ class pyGBOFitnessFunction_t : public GBOFitnessFunction_t<T>
 		int getNumberOfFitnessBuffers();
 		int getIndexOfFitnessBuffer( int subfunction_index );
 		
-		double getLowerRangeBound( int dimension, std::vector<T> &variables );
-		double getUpperRangeBound( int dimension, std::vector<T> &variables );
+		double getLowerRangeBound( int dimension, vec_t<T> &variables );
+		double getUpperRangeBound( int dimension, vec_t<T> &variables );
 	
 	protected:
 		PyObject *py_class;

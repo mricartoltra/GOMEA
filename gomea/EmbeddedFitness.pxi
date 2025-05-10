@@ -121,22 +121,46 @@ cdef public double gomea_pyfitness_similarity_measure(obj, size_t var_a, size_t 
     cdef double result = fitness_obj.similarity_measure(var_a,var_b)
     return result
 
-cdef public double gomea_pyfitness_lower_range_bound_double(obj, int variable_index, vector[double] variables) except? -INFINITY:
+cdef public double gomea_pyfitness_lower_range_bound_double(obj, int variable_index, vector[double]&variables) except? -INFINITY:
     fitness_obj = <FitnessFunction?>obj
-    cdef double result = fitness_obj.lower_range_bound(variable_index, variables)
+
+    cdef void *vec_ptr = &variables[0]
+    cdef np.npy_intp shape[1]
+    shape[0] = <np.npy_intp> variables.size()
+    cdef np.ndarray npvars = np.PyArray_SimpleNewFromData(1, shape, np.NPY_FLOAT64, vec_ptr)
+
+    cdef double result = fitness_obj.lower_range_bound(variable_index, npvars)
     return result
 
-cdef public double gomea_pyfitness_upper_range_bound_double(obj, int variable_index, vector[double] variables) except? INFINITY:
+cdef public double gomea_pyfitness_upper_range_bound_double(obj, int variable_index, vector[double] &variables) except? INFINITY:
     fitness_obj = <FitnessFunction?>obj
-    cdef double result = fitness_obj.upper_range_bound(variable_index, variables)
+
+    cdef void *vec_ptr = &variables[0]
+    cdef np.npy_intp shape[1]
+    shape[0] = <np.npy_intp> variables.size()
+    cdef np.ndarray npvars = np.PyArray_SimpleNewFromData(1, shape, np.NPY_FLOAT64, vec_ptr)
+
+    cdef double result = fitness_obj.upper_range_bound(variable_index, npvars)
     return result
 
-cdef public double gomea_pyfitness_lower_range_bound_char(obj, int variable_index, vector[char] variables) except? -INFINITY:
+cdef public double gomea_pyfitness_lower_range_bound_char(obj, int variable_index, vector[char] &variables) except? -INFINITY:
     fitness_obj = <FitnessFunction?>obj
-    cdef double result = fitness_obj.lower_range_bound(variable_index, variables)
+
+    cdef void *vec_ptr = &variables[0]
+    cdef np.npy_intp shape[1]
+    shape[0] = <np.npy_intp> variables.size()
+    cdef np.ndarray npvars = np.PyArray_SimpleNewFromData(1, shape, np.NPY_FLOAT64, vec_ptr)
+
+    cdef double result = fitness_obj.lower_range_bound(variable_index, npvars)
     return result
 
-cdef public double gomea_pyfitness_upper_range_bound_char(obj, int variable_index, vector[char] variables) except? INFINITY:
+cdef public double gomea_pyfitness_upper_range_bound_char(obj, int variable_index, vector[char] &variables) except? INFINITY:
     fitness_obj = <FitnessFunction?>obj
-    cdef double result = fitness_obj.upper_range_bound(variable_index, variables)
+
+    cdef void *vec_ptr = &variables[0]
+    cdef np.npy_intp shape[1]
+    shape[0] = <np.npy_intp> variables.size()
+    cdef np.ndarray npvars = np.PyArray_SimpleNewFromData(1, shape, np.NPY_FLOAT64, vec_ptr)
+
+    cdef double result = fitness_obj.upper_range_bound(variable_index, npvars)
     return result
