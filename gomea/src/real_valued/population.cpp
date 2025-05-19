@@ -761,11 +761,13 @@ void population_t::initializeParameterRangeBounds( double lower_user_range, doub
 	lower_init_ranges  = (double *) Malloc( fitness->number_of_variables*sizeof( double ) );
 	upper_init_ranges  = (double *) Malloc( fitness->number_of_variables*sizeof( double ) );
 
-	solution_t<double> *dummy_vars_for_bounds = new solution_t<double>(fitness->number_of_variables);
+	//solution_t<double> *dummy_vars_for_bounds = new solution_t<double>(fitness->number_of_variables);
 
 	for(int i = 0; i < fitness->number_of_variables; i++ )
 	{
 		lower_init_ranges[i] = lower_user_range;
+		upper_init_ranges[i] = upper_user_range;
+		/*
 		double problem_lower_bound = fitness->getLowerRangeBound(i, dummy_vars_for_bounds->variables);
         double problem_upper_bound = fitness->getUpperRangeBound(i, dummy_vars_for_bounds->variables);
 
@@ -774,14 +776,15 @@ void population_t::initializeParameterRangeBounds( double lower_user_range, doub
 		if( lower_user_range > problem_upper_bound )
 			lower_init_ranges[i] = problem_upper_bound;
 
-		upper_init_ranges[i] = upper_user_range;
+		
 		if( upper_user_range > problem_upper_bound)
 			upper_init_ranges[i] = problem_upper_bound;
 		if( upper_user_range < problem_lower_bound )
 			upper_init_ranges[i] = problem_lower_bound;
+		*/
 	}
 
-	delete (dummy_vars_for_bounds);
+	//delete (dummy_vars_for_bounds);
 }
 
 

@@ -616,16 +616,18 @@ partial_solution_t<double> *normal_distribution_t::generatePartialSolution( solu
 
 		if( times_not_in_bounds >= 100 )
 		{
-			printf("Sampled out of bounds too many times.\n");
-			exit(1);
-			/*result = vec(num_indices,fill::none);
-			sample_means = vec(num_indices,fill::none);
-			sample_zs = zeros<vec>(num_indices);
+			// printf("Sampled out of bounds too many times.\n");
+			// exit(1);
+			//result = vec(num_indices,fill::none);
+			//sample_means = vec(num_indices,fill::none);
+			//sample_zs = zeros<vec>(num_indices);
 			for(int i = 0; i < num_indices; i++ )
 			{
-				result[i] = lower_init_ranges[indices[i]] + (upper_init_ranges[indices[i]] - lower_init_ranges[indices[i]])*randu<double>();
-				sample_means[i] = lower_init_ranges[indices[i]] + (upper_init_ranges[indices[i]] - lower_init_ranges[indices[i]])*0.5;
-			}*/
+				double lower = fitness_function->getLowerRangeBound( indices[i], parent->variables );
+				double upper = fitness_function->getUpperRangeBound( indices[i], parent->variables );
+				result[i] = lower + (upper - lower)*gomea::utils::randomRealUniform01();
+				// sample_means[i] = lower_init_ranges[indices[i]] + (upper_init_ranges[indices[i]] - lower_init_ranges[indices[i]])*0.5;
+			}
 		}
 		else
 		{
@@ -901,6 +903,13 @@ partial_solution_t<double> *conditional_distribution_t::generatePartialSolution(
 					sample_result[i] = lower_init_ranges[indices[i]] + (upper_init_ranges[indices[i]] - lower_init_ranges[indices[i]])*randomRealUniform01();
 					sample_means[i] = lower_init_ranges[indices[i]] + (upper_init_ranges[indices[i]] - lower_init_ranges[indices[i]]) * 0.5;
 				}*/
+				for(int i = 0; i < num_indices; i++ )
+				{
+					double lower = fitness_function->getLowerRangeBound( indices[i], parent->variables );
+					double upper = fitness_function->getUpperRangeBound( indices[i], parent->variables );
+					result[i] = lower + (upper - lower)*gomea::utils::randomRealUniform01();
+					// sample_means[i] = lower_init_ranges[indices[i]] + (upper_init_ranges[indices[i]] - lower_init_ranges[indices[i]])*0.5;
+				}
 			}
 			else
 			{

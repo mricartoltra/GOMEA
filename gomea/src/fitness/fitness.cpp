@@ -325,12 +325,14 @@ double fitness_t<T>::getSimilarityMeasure( size_t var_a, size_t var_b )
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-= Section Problems -=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 double fitness_generic_t::getLowerRangeBound( int dimension, std::vector<double> &variables )
 {
+	std::cout << "generic lower range bound" << std::endl;
 	(void)variables;
 	return( -INFINITY );
 }
 		
 double fitness_generic_t::getUpperRangeBound( int dimension, std::vector<double> &variables )
 {
+	std::cout << "generic upper range bound" << std::endl;
 	(void)variables;
 	return( INFINITY );
 }
@@ -341,10 +343,13 @@ double fitness_generic_t::getUpperRangeBound( int dimension, std::vector<double>
  */
 bool fitness_generic_t::isParameterInRangeBounds( double parameter, int dimension, std::vector<double> &variables )
 {
+	std::cout << "isParameterInRangeBounds: " << parameter << " " << dimension << " " << variables[dimension] << std::endl;
     if( parameter < getLowerRangeBound( dimension, variables ) ||
 		parameter > getUpperRangeBound( dimension, variables ) ||
 		std::isnan( parameter ) )
     {
+		std::cout << "isParameterInRangeBoundsFalse1: " << getLowerRangeBound( dimension, variables ) << std::endl;
+		std::cout << "isParameterInRangeBoundsFalse2: " << getUpperRangeBound( dimension, variables ) << std::endl;
         return( false );
     }
 
@@ -461,6 +466,74 @@ double *fitness_t<double>::rotateVariablesInBlocks( double *variables, int len, 
 		rotated_variables[i] = variables[i];
 
     return( rotated_variables );
+}
+
+template<>
+double fitness_t<double>::getLowerRangeBound( int dimension, std::vector<double> &variables )
+{
+	(void)variables;
+	return( -INFINITY );
+}
+	
+template<>	
+double fitness_t<double>::getUpperRangeBound( int dimension, std::vector<double> &variables )
+{
+	(void)variables;
+	return( INFINITY );
+}
+
+template<>
+double fitness_t<char>::getLowerRangeBound( int dimension, std::vector<char> &variables )
+{
+	(void)variables;
+	return( -INFINITY );
+}
+	
+template<>	
+double fitness_t<char>::getUpperRangeBound( int dimension, std::vector<char> &variables )
+{
+	(void)variables;
+	return( INFINITY );
+}
+
+
+
+/**
+ * Returns whether a parameter is inside the range bound of
+ * every problem.
+ */
+template<>	
+bool fitness_t<double>::isParameterInRangeBounds( double parameter, int dimension, std::vector<double> &variables )
+{
+	std::cout << "isParameterInRangeBounds fitness_t: " << parameter << " " << dimension << " " << variables[dimension] << std::endl;
+    if( parameter < getLowerRangeBound( dimension, variables ) ||
+		parameter > getUpperRangeBound( dimension, variables ) ||
+		std::isnan( parameter ) )
+    {
+		std::cout << "isParameterInRangeBoundsFalseLower: " << getLowerRangeBound( dimension, variables ) << std::endl;
+		std::cout << "isParameterInRangeBoundsFalseUpper: " << getUpperRangeBound( dimension, variables ) << std::endl;
+        return( false );
+    }
+
+    return( true );
+}
+
+
+/**
+ * Returns whether a parameter is inside the range bound of
+ * every problem.
+ */
+template<>	
+bool fitness_t<char>::isParameterInRangeBounds( double parameter, int dimension, std::vector<char> &variables )
+{
+    if( parameter < getLowerRangeBound( dimension, variables ) ||
+		parameter > getUpperRangeBound( dimension, variables ) ||
+		std::isnan( parameter ) )
+    {
+        return( false );
+    }
+
+    return( true );
 }
 
 template<class T>
